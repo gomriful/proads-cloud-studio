@@ -236,3 +236,7 @@ python -m pytest
 - GitHub Actions is free for public repositories; private repositories on the
   free plan include a monthly quota of minutes. A sample render uses about 3.
 - Only use music you have the right to use in advertising.
+- **If the repository is public, everything in it is public**: uploaded customer
+  photos, clips, recordings and configs, and the rendered videos attached to
+  each run. Only upload media the customer is happy to have visible, or switch
+  the repository back to private (Settings → General → Danger Zone).
