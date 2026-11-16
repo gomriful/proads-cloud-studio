@@ -1,6 +1,6 @@
 name: Render Advertisement
 
-# Manual "Run workflow" button (Actions tab), also reusable from other workflows.
+# Manual "Run workflow" button in the Actions tab.
 on:
   workflow_dispatch:
     inputs:
@@ -28,17 +28,6 @@ on:
         options:
           - final
           - draft
-  workflow_call:
-    inputs:
-      config:
-        type: string
-        default: "configs/dream_house_meuble.json"
-      format:
-        type: string
-        default: "config"
-      quality:
-        type: string
-        default: "final"
 
 permissions:
   contents: read
