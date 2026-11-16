@@ -1,0 +1,142 @@
+{
+  "project": "dream_house_meuble",
+  "generate_sample_assets": true,
+
+  "business": {
+    "name": "Dream House Meuble",
+    "phone": null,
+    "address": "مدنين - سوق ليبيا",
+    "price": "2950",
+    "currency": "د.ت",
+    "delivery": "التوصيل بلاش لكامل تونس",
+    "delivery_fr": "Livraison gratuite sur toute la Tunisie"
+  },
+
+  "output": {
+    "formats": ["vertical", "horizontal"],
+    "fps": 30,
+    "crf": 18,
+    "preset": "medium"
+  },
+
+  "style": {
+    "text_color": "#FFFFFF",
+    "accent_color": "#F2B134"
+  },
+
+  "audio": {
+    "music": { "path": "assets/sample/music.wav", "volume": 0.55, "fade_in": 1.0, "fade_out": 2.0 },
+    "voiceover": { "path": "assets/sample/voiceover_placeholder.wav", "start": 1.0, "volume": 1.0 },
+    "ducking": { "enabled": true, "threshold": 0.03, "ratio": 10, "attack_ms": 40, "release_ms": 600 }
+  },
+
+  "defaults": {
+    "scene_duration": 4.0,
+    "transition": { "type": "fade", "duration": 0.6 }
+  },
+
+  "scenes": [
+    {
+      "id": "intro",
+      "type": "color",
+      "colors": ["#1F3A3D", "#0E1B1D"],
+      "duration": 3.6,
+      "texts": [
+        { "text": "{name}", "position": "upper", "size": 104, "weight": "black", "color": "#F2B134",
+          "animation": { "in": "zoom" }, "start": 0.3,
+          "vertical": { "position": { "x": 0.5, "y": 0.4 } },
+          "horizontal": { "position": { "x": 0.5, "y": 0.38 }, "size": 120 } },
+        { "text": "جدّد دارك بأحلى موبل", "size": 70, "start": 0.9,
+          "vertical": { "position": { "x": 0.5, "y": 0.55 } },
+          "horizontal": { "position": { "x": 0.5, "y": 0.62 } } }
+      ]
+    },
+    {
+      "id": "bedroom",
+      "type": "image",
+      "source": "assets/sample/bedroom.png",
+      "motion": { "type": "zoom_in", "amount": 0.14 },
+      "transition": { "type": "smoothleft", "duration": 0.7 },
+      "texts": [
+        { "text": "بيت نوم", "position": "bottom", "size": 92, "weight": "black",
+          "box": { "color": "#1F3A3D", "opacity": 0.88 }, "animation": { "in": "slide_up" }, "start": 0.7 }
+      ]
+    },
+    {
+      "id": "living_room",
+      "type": "image",
+      "source": "assets/sample/living_room.png",
+      "motion": { "type": "pan_right", "amount": 0.14 },
+      "transition": { "type": "smoothleft", "duration": 0.7 },
+      "texts": [
+        { "text": "صالون", "position": "bottom", "size": 92, "weight": "black",
+          "box": { "color": "#1F3A3D", "opacity": 0.88 }, "animation": { "in": "slide_up" }, "start": 0.7 }
+      ]
+    },
+    {
+      "id": "tv_cabinet",
+      "type": "image",
+      "source": "assets/sample/tv_cabinet.png",
+      "motion": { "type": "zoom_out", "amount": 0.14 },
+      "transition": { "type": "smoothleft", "duration": 0.7 },
+      "texts": [
+        { "text": "موبل تلفزة", "position": "bottom", "size": 92, "weight": "black",
+          "box": { "color": "#1F3A3D", "opacity": 0.88 }, "animation": { "in": "slide_up" }, "start": 0.7 }
+      ]
+    },
+    {
+      "id": "shoe_cabinet",
+      "type": "image",
+      "source": "assets/sample/shoe_cabinet.png",
+      "fit": "contain",
+      "motion": { "type": "zoom_in", "amount": 0.1 },
+      "transition": { "type": "smoothleft", "duration": 0.7 },
+      "texts": [
+        { "text": "خزانة صبابط", "position": "bottom", "size": 92, "weight": "black",
+          "box": { "color": "#1F3A3D", "opacity": 0.88 }, "animation": { "in": "slide_up" }, "start": 0.7 }
+      ]
+    },
+    {
+      "id": "offer",
+      "type": "video",
+      "source": "assets/sample/showroom.mp4",
+      "duration": 4.6,
+      "dim": 0.45,
+      "transition": { "type": "circleopen", "duration": 0.8 },
+      "texts": [
+        { "text": "عرض خاص", "position": "upper", "size": 96, "weight": "black", "animation": { "in": "slide_down" }, "start": 0.6 },
+        { "text": "{price} {currency}", "position": "center", "size": 170, "weight": "black", "color": "#1B1B1B",
+          "box": { "color": "#F2B134", "padding": 40, "radius": 36 }, "animation": { "in": "zoom" }, "start": 1.1 }
+      ]
+    },
+    {
+      "id": "delivery",
+      "type": "color",
+      "colors": ["#F2B134", "#D98E04"],
+      "duration": 4.0,
+      "transition": { "type": "slideup", "duration": 0.6 },
+      "texts": [
+        { "text": "{delivery}", "position": { "x": 0.5, "y": 0.42 }, "size": 100, "weight": "black", "color": "#1B1B1B",
+          "shadow": false, "animation": { "in": "slide_right" }, "start": 0.5 },
+        { "text": "{delivery_fr}", "position": { "x": 0.5, "y": 0.6 }, "size": 54, "weight": "bold", "color": "#1B1B1B",
+          "shadow": false, "animation": { "in": "fade" }, "start": 1.1 }
+      ]
+    },
+    {
+      "id": "contact",
+      "type": "color",
+      "colors": ["#1F3A3D", "#0E1B1D"],
+      "duration": 4.6,
+      "transition": { "type": "fade", "duration": 0.7 },
+      "texts": [
+        { "text": "{name}", "position": { "x": 0.5, "y": 0.3 }, "size": 100, "weight": "black", "color": "#F2B134",
+          "animation": { "in": "fade" }, "start": 0.4 },
+        { "text": "{address}", "position": { "x": 0.5, "y": 0.47 }, "size": 78, "animation": { "in": "slide_up" }, "start": 0.8 },
+        { "text": "{phone}", "position": { "x": 0.5, "y": 0.6 }, "size": 96, "weight": "black",
+          "box": { "color": "#F2B134" }, "color": "#1B1B1B", "animation": { "in": "zoom" }, "start": 1.2 },
+        { "text": "مرحبا بيكم", "position": { "x": 0.5, "y": 0.74 }, "size": 66, "weight": "regular",
+          "animation": { "in": "fade" }, "start": 1.5 }
+      ]
+    }
+  ]
+}
