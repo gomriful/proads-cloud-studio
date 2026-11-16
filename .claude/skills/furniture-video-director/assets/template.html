@@ -1,0 +1,38 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+/* Latin font: installed Poppins, or Poppins-Bold.ttf next to this file; falls back to sans-serif. For a custom font: copy the .ttf next to this file and uncomment: */
+/* @font-face{font-family:Brand;src:url(Brand-Bold.ttf);font-weight:700} */
+@font-face{font-family:Pop;src:local('Poppins Bold'),local('Poppins-Bold'),url(file:///usr/share/fonts/truetype/google-fonts/Poppins-Bold.ttf),url(Poppins-Bold.ttf);font-weight:700}
+html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}
+</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script>
+// ---------- CONFIG (edit) ----------
+const THEME='blueprint';            // blueprint | nightphone | ledger  (see themes.js)
+const AR='"DejaVu Sans","Noto Sans Arabic","Segoe UI","Geeza Pro",sans-serif'; // or 'Brand' for a supplied font
+const S=[[0,6.5],[6.5,14.0]];       // scene windows: paste "S = ..." from analyze_audio.py
+const END=14.0;                     // audio duration + ~2.4s (analyze_audio.py prints it)
+const SFX=[ // [time,'type'] on beats. types: whoosh sweep swipe type pop close clank tick click ding boom hit riser
+ [0.15,'whoosh'],[0.6,'pop'],[3.0,'pop'],[6.55,'sweep'],[7.0,'pop'],[9.0,'boom']
+];
+</script>
+<script src="themes.js"></script>
+<script src="engine.js"></script>
+<script src="components.js"></script>
+<script>
+// ---------- SCENES (absolute time t; pure functions of t; events on beats) ----------
+const SC=[];
+SC[0]=(t)=>{
+ node(360,900,220,'db',pr(t,0.6,0.55));
+ node(720,900,220,'chart',pr(t,3.0,0.55),{lit:pr(t,3.4,0.3)});
+ const pts=[[470,900],[610,900]];stroke(COL.sig,6);polyP(pts,eo(pr(t,3.6,0.5)));if(t>4.1)pulses(pts,t,2,0.8);
+ gauge(CX,1400,200,0.2+0.6*pr(t,4,2),pr(t,3.8,0.5));
+};
+SC[1]=(t)=>{
+ clockFace(CX,700,180,eio(pr(t,7.0,1.6)),pr(t,6.8,0.5));
+ wordPop('سخّره',CX,1250,190,pr(t,9.0,0.6),COL.ink);
+ fadeOut(t);
+};
+document.fonts.load('700 40px Pop');
+</script></body></html>

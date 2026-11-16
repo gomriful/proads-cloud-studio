@@ -1,0 +1,1 @@
+Furniture Video Director: customized from Motion Explainer (MIT, original license retained). Upload this skill folder as ZIP where supported. The skill does not grant Claude mobile direct access to CapCut or video-rendering binaries. No price counter or unrelated countdown logic included.
