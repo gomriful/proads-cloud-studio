@@ -1,0 +1,137 @@
+name: Render Advertisement
+
+# Manual "Run workflow" button in the Actions tab.
+on:
+  workflow_dispatch:
+    inputs:
+      config:
+        description: "Configuration file to render"
+        required: true
+        default: "configs/dream_house_meuble.json"
+        type: string
+      format:
+        description: "Video format"
+        required: true
+        default: "config"
+        type: choice
+        options:
+          - config      # the formats listed in the configuration file
+          - both        # vertical 9:16 + horizontal 16:9
+          - vertical    # 9:16  1080x1920
+          - horizontal  # 16:9  1920x1080
+          - square      # 1:1   1080x1080
+      quality:
+        description: "final = 1080p, draft = fast half-size preview"
+        required: true
+        default: "final"
+        type: choice
+        options:
+          - final
+          - draft
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    name: Render video
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      CONFIG: ${{ inputs.config }}
+      FORMAT: ${{ inputs.format }}
+      QUALITY: ${{ inputs.quality }}
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install FFmpeg and text-shaping libraries
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends ffmpeg libfribidi0 espeak-ng
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Show tool versions
+        run: |
+          ffmpeg -version | head -n 1
+          ffprobe -version | head -n 1
+          python --version
+          python -c "from proads.textrender import shaping_engine; print('Arabic shaping engine:', shaping_engine())"
+
+      - name: Validate configuration and media
+        run: python -m proads validate "$CONFIG"
+
+      - name: Render advertisement
+        run: |
+          EXTRA=""
+          if [ "$QUALITY" = "draft" ]; then EXTRA="--draft"; fi
+          python -m proads render "$CONFIG" --format "$FORMAT" --output output $EXTRA
+
+      - name: Write run summary
+        if: always()
+        run: |
+          {
+            echo "## ProAds Cloud Studio"
+            echo ""
+            echo "Configuration: \`$CONFIG\` · format: \`$FORMAT\` · quality: \`$QUALITY\`"
+            echo ""
+            if [ -f output/render_report.json ]; then
+              echo "| File | Size | Duration | MB |"
+              echo "|---|---|---|---|"
+              python - <<'PY'
+          import json
+          report = json.load(open("output/render_report.json", encoding="utf-8"))
+          for o in report["outputs"]:
+              name = o["file"].split("/")[-1]
+              print(f"| {name} | {o['width']}x{o['height']} | {o['duration_seconds']} s | {o['size_mb']} |")
+          for w in report["warnings"]:
+              print(f"\n> Warning: {w}")
+          PY
+              echo ""
+              echo "Download the video from the **Artifacts** section at the bottom of this page."
+            else
+              echo "**The render did not finish.** Open the failed step above to read the error."
+              echo "The FFmpeg logs are attached as the \`render-logs\` artifact."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Print FFmpeg logs (on failure)
+        if: failure()
+        run: |
+          shopt -s nullglob
+          for f in output/logs/*.log; do
+            echo "::group::$f"
+            tail -n 60 "$f"
+            echo "::endgroup::"
+          done
+
+      - name: Upload final MP4
+        uses: actions/upload-artifact@v4
+        with:
+          name: advertisement-${{ github.run_number }}
+          path: |
+            output/*.mp4
+            output/render_report.json
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+
+      - name: Upload logs (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: render-logs-${{ github.run_number }}
+          path: output/logs/
+          if-no-files-found: ignore
+          retention-days: 7

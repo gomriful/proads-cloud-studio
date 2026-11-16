@@ -1,0 +1,6 @@
+# Runtime dependencies of the ProAds Cloud Studio engine.
+# FFmpeg / FFprobe are system programs installed by the GitHub Actions workflow.
+Pillow>=10.1
+arabic-reshaper>=3.0
+python-bidi>=0.4.2
+pillow-heif>=0.16
